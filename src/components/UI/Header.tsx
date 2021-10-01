@@ -27,6 +27,9 @@ const TitleContainer = styled.div`
   align-items: center;
   svg {
     font-size: 1.5rem;
+    @media screen and (max-width: 600px) {
+      font-size: 1.25rem;
+    }
   }
 
   a {
@@ -49,6 +52,10 @@ const NavLink = styled.a`
   transition: filter 0.2s;
   margin-right: 16px;
 
+  @media screen and (max-width: 600px) {
+    margin-right: 8px;
+  }
+
   a {
     color: inherit;
     text-decoration: none;
@@ -63,17 +70,30 @@ const NavLink = styled.a`
     font-size: 1rem;
     margin-right: 8px;
     margin-top: 4px;
+    @media screen and (max-width: 600px) {
+      font-size: 0.5rem;
+      margin-right: 3px;
+      margin-top: 0;
+    }
   }
 `;
 
 const NavLinkTitle = styled.h2`
   font-size: 1.17rem;
+
+  @media screen and (max-width: 600px) {
+    font-size: 0.5rem;
+  }
 `;
 
 const HeaderTitle = styled.h1`
   font-size: 1.5rem;
   color: #fff;
   margin-right: 0.25rem;
+  @media screen and (max-width: 600px) {
+    font-size: 0.75rem;
+    width: 128px;
+  }
 `;
 
 const LogoutButton = styled.button`
@@ -93,6 +113,11 @@ const LogoutButton = styled.button`
     font-size: 1rem;
     margin-right: 8px;
     margin-top: 4px;
+    @media screen and (max-width: 600px) {
+      font-size: 0.5rem;
+      margin-right: 3px;
+      margin-top: 0;
+    }
   }
 `;
 

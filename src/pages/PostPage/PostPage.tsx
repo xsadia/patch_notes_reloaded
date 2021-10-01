@@ -50,8 +50,24 @@ const PostContentContainer = styled.main`
   border: 3px solid var(--green);
   border-radius: 8px;
 
+  @media screen and (max-width: 600px) {
+    width: 300px;
+
+    p {
+      font-size: 0.65rem;
+    }
+
+    li {
+      font-size: 0.6rem;
+    }
+  }
+
   a {
     color: var(--green);
+  }
+
+  li {
+    font-weight: 500;
   }
 `;
 
@@ -60,6 +76,10 @@ const PostHeaderContainer = styled.div`
   justify-content: space-between;
   width: 960px;
   margin-bottom: 4px;
+
+  @media screen and (max-width: 600px) {
+    width: 300px;
+  }
 `;
 
 const PostTitleContainer = styled.div`
@@ -76,6 +96,10 @@ const CommentSectionContainer = styled.div`
   border-radius: 8px;
   border: 3px solid var(--green);
   background: #1a202c;
+
+  @media screen and (max-width: 600px) {
+    width: 300px;
+  }
 `;
 
 const CommentContainer = styled.div`
@@ -93,11 +117,19 @@ const CommentContainer = styled.div`
     width: 32px;
     height: 32px;
     justify-content: center;
+
+    @media screen and (max-width: 600px) {
+      display: none;
+    }
   }
 
   .initials-avatar div {
     color: var(--green) !important;
     background: #fff;
+
+    @media screen and (max-width: 600px) {
+      display: none;
+    }
   }
 `;
 
@@ -128,31 +160,53 @@ const CommentLikeContainer = styled.div`
 
 const NumberOfLikes = styled.span`
   font-size: 1rem;
+  @media screen and (max-width: 600px) {
+    font-size: 0.5rem;
+  }
 `;
 
 const CommentDate = styled.span`
   margin: 3px 0 0 4px;
   font-size: 0.875rem;
   font-weight: 600;
+
+  @media screen and (max-width: 600px) {
+    font-size: 0.6rem;
+    margin: 1px 0 0 2px;
+  }
 `;
 
 const CommentContent = styled.p`
   max-width: 820px;
   font-size: 0.875rem;
+  @media screen and (max-width: 600px) {
+    font-size: 0.5rem;
+    max-width: 240px;
+  }
 `;
 
 const UserUsername = styled.h1`
   font-size: 1rem;
   font-weight: 600;
+  @media screen and (max-width: 600px) {
+    font-size: 0.65rem;
+  }
 `;
 
 const PostTitle = styled.h1`
   font-size: 2.5rem;
   color: var(--green);
+
+  @media screen and (max-width: 600px) {
+    font-size: 1rem;
+  }
 `;
 
 const PostDate = styled.h2`
   color: var(--green);
+  @media screen and (max-width: 600px) {
+    font-size: 0.5rem;
+  }
 `;
 
 const BackButton = styled.button`
@@ -165,9 +219,17 @@ const BackButton = styled.button`
   color: var(--green);
   transition: filter 0.2s;
 
+  @media screen and (max-width: 600px) {
+    font-size: 0.5rem;
+  }
+
   svg {
     margin-top: 4px;
     font-size: 1.5rem;
+    @media screen and (max-width: 600px) {
+      font-size: 0.75rem;
+      margin-top: 2px;
+    }
   }
 
   &:hover {
@@ -189,6 +251,9 @@ const LikeButton = styled.button`
   }
   svg {
     font-size: 1rem;
+    @media screen and (max-width: 600px) {
+      font-size: 0.5rem;
+    }
   }
 `;
 
@@ -206,6 +271,10 @@ const DeleteCommentButton = styled.button`
   }
   svg {
     font-size: 1rem;
+
+    @media screen and (max-width: 600px) {
+      font-size: 0.5rem;
+    }
   }
 `;
 
@@ -225,6 +294,12 @@ const FormButton = styled.button`
   border: 2px solid var(--green);
   border-radius: 6px;
   transition: filter 0.2s;
+
+  @media screen and (max-width: 600px) {
+    font-size: 0.5rem;
+    width: 66px;
+    padding: 4px;
+  }
 
   &:disabled {
     background: #ccc;
@@ -247,6 +322,10 @@ const InputWrapper = styled.div<InputWrapperProps>`
   border: 2px solid #f7f7f7;
   border-radius: 8px;
 
+  @media screen and (max-width: 600px) {
+    padding: 4px;
+  }
+
   ${(props) =>
     props.isInputFocused &&
     css`
@@ -261,11 +340,18 @@ const CommentInput = styled.input`
   border: none;
   overflow-wrap: break-word;
   font-size: 1rem;
+  @media screen and (max-width: 600px) {
+    font-size: 0.65rem;
+  }
 `;
 
 const PostOwner = styled.h4`
   font-size: 1.17rem;
   color: var(--green);
+
+  @media screen and (max-width: 600px) {
+    font-size: 0.5rem;
+  }
 `;
 
 export const PostPage = () => {
@@ -296,6 +382,8 @@ export const PostPage = () => {
     setComments([...data.comments]);
     setIsLoading(false);
   };
+
+  console.log(post.content);
 
   useEffect(() => {
     fetchPost();

@@ -21,12 +21,21 @@ type Post = {
 };
 
 const PostContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 640px;
   height: 200px;
   background: var(--green);
   border-radius: 8px;
   padding: 8px;
   transition: filter 0.2s;
+
+  @media screen and (max-width: 600px) {
+    width: 239px;
+    height: 100px;
+    padding: 4px;
+  }
 
   &:hover {
     filter: brightness(0.8);
@@ -55,6 +64,11 @@ const PostInfoContainer = styled.div`
   border-radius: 8px;
   padding: 8px 16px;
 
+  @media screen and (max-width: 600px) {
+    width: 230px;
+    height: 64px;
+  }
+
   a {
     color: inherit;
   }
@@ -66,6 +80,13 @@ const PostOwnerContainer = styled.div`
   flex-direction: column;
   padding: 8px 8px;
   width: 600px;
+
+  @media screen and (max-width: 600px) {
+    width: 120px;
+    height: 26px;
+    padding: 2px 4px;
+    align-items: flex-start;
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -76,15 +97,25 @@ const ButtonContainer = styled.div`
 
 const PostTitle = styled.h1`
   font-weight: 500;
+  @media screen and (max-width: 600px) {
+    font-size: 1rem;
+  }
 `;
 
 const PostSubtitle = styled.h2`
   font-weight: 500;
+  @media screen and (max-width: 600px) {
+    font-size: 0.5rem;
+  }
 `;
 
 const PostOwnerInfo = styled.h2`
   font-size: 1rem;
   color: #fff;
+
+  @media screen and (max-width: 600px) {
+    font-size: 0.5rem;
+  }
 `;
 
 const DeletePostButton = styled.button`
@@ -101,6 +132,10 @@ const DeletePostButton = styled.button`
   }
   svg {
     font-size: 1.25rem;
+
+    @media screen and (max-width: 600px) {
+      font-size: 0.75rem;
+    }
   }
 `;
 
