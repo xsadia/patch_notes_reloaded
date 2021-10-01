@@ -383,8 +383,6 @@ export const PostPage = () => {
     setIsLoading(false);
   };
 
-  console.log(post.content);
-
   useEffect(() => {
     fetchPost();
   }, []);
