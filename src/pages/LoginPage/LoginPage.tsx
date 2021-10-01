@@ -31,6 +31,10 @@ const Form = styled.form`
   width: 400px;
   border: 3px solid var(--green);
   border-radius: 8px;
+
+  @media screen and (max-width: 600px) {
+    width: 320px;
+  }
 `;
 
 const FormTitle = styled.h1`

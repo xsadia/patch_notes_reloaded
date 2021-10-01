@@ -23,6 +23,10 @@ const Button = styled.button`
   transition: filter 0.2s;
   margin-top: 16px;
 
+  @media screen and (max-width: 600px) {
+    width: 280px;
+  }
+
   &:hover {
     filter: brightness(0.9);
   }

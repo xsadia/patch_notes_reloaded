@@ -22,6 +22,10 @@ const InputWrapper = styled.div<InputWrapperProps>`
 
   margin-top: 16px;
 
+  @media screen and (max-width: 600px) {
+    width: 280px;
+  }
+
   ${(props) =>
     props.isErrored &&
     css`
