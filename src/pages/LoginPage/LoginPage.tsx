@@ -72,7 +72,7 @@ export const LoginPage = () => {
       );
 
       if (!response.ok) {
-        toast('Combinação e-mail/senha incorretos', {
+        toast('Combinação e-mail/senha incorreta', {
           type: 'error',
           position: 'top-right',
           autoClose: 5000,
