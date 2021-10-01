@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 import { RiPlantLine } from 'react-icons/ri';
 import { FaTwitch, FaTwitter } from 'react-icons/fa';
+import { MdCreate } from 'react-icons/md';
+import { FiLogOut } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../hooks/Auth';
 
 const HeaderContainer = styled.header`
   z-index: 9999;
@@ -31,8 +34,8 @@ const TitleContainer = styled.div`
 
 const NavLinkContainer = styled.div`
   display: flex;
-  width: 240px;
-  justify-content: space-evenly;
+  width: 480px;
+  justify-content: flex-end;
 `;
 
 const NavLink = styled.a`
@@ -41,6 +44,13 @@ const NavLink = styled.a`
   display: flex;
   align-items: center;
   transition: filter 0.2s;
+  margin-right: 16px;
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    display: flex;
+  }
 
   &:hover {
     filter: brightness(0.8);
@@ -63,7 +73,28 @@ const HeaderTitle = styled.h1`
   margin-right: 0.25rem;
 `;
 
+const LogoutButton = styled.button`
+  color: #fff;
+  display: flex;
+  align-items: center;
+  transition: filter 0.2s;
+  background: none;
+  outline: none;
+  border: none;
+
+  &:hover {
+    filter: brightness(0.8);
+  }
+
+  svg {
+    font-size: 1rem;
+    margin-right: 8px;
+    margin-top: 4px;
+  }
+`;
+
 export const Header = () => {
+  const { user, signOut, isAuthenticated } = useAuth();
   return (
     <HeaderContainer>
       <TitleContainer>
@@ -73,6 +104,12 @@ export const Header = () => {
         <RiPlantLine />
       </TitleContainer>
       <NavLinkContainer>
+        {user?.role === 'admin' && (
+          <NavLink href="/create">
+            <MdCreate />
+            <NavLinkTitle>Criar</NavLinkTitle>
+          </NavLink>
+        )}
         <NavLink rel="external" href="https://twitter.com/erinzinhu">
           <FaTwitter />
           <NavLinkTitle>Twitter</NavLinkTitle>
@@ -81,6 +118,12 @@ export const Header = () => {
           <FaTwitch />
           <NavLinkTitle>Twitch</NavLinkTitle>
         </NavLink>
+        {isAuthenticated && (
+          <LogoutButton onClick={() => signOut()}>
+            <FiLogOut />
+            <NavLinkTitle>Logout</NavLinkTitle>
+          </LogoutButton>
+        )}
       </NavLinkContainer>
     </HeaderContainer>
   );

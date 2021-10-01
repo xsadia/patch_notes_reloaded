@@ -21,6 +21,7 @@ export const GlobalStyle = createGlobalStyle`
         ::-webkit-scrollbar-thumb {
             background: var(--green);
         }
+
     }
 
     body, input, textarea, button {
@@ -30,7 +31,12 @@ export const GlobalStyle = createGlobalStyle`
     h1, h1, h3, h4, h5, h6, strong {
         font-weight: 600;
     }
+    button[disabled] {
+        cursor: not-allowed;
+    }
     button, a {
         cursor: pointer;
     }
+
+    
 `;
