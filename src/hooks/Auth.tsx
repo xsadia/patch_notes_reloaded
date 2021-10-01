@@ -22,6 +22,7 @@ type AuthContexData = {
   isAuthenticated: boolean;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
+  saveToLocalStorage(user: AuthState): void;
 };
 
 type AuthProviderProps = {
@@ -42,6 +43,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     return {} as AuthState;
   });
   const isAuthenticated = !!data.token;
+
+  function saveToLocalStorage({ token, user }: AuthState) {
+    setData({ token, user });
+  }
 
   async function signIn({ email, password }: SignInCredentials) {
     const response = await fetch(
@@ -65,7 +70,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.setItem('@patchNotes:token', token);
     localStorage.setItem('@patchNotes:user', JSON.stringify(user));
 
-    setData({ token, user });
+    saveToLocalStorage({ token, user });
   }
 
   function signOut() {
@@ -83,6 +88,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         signOut,
         token: data.token,
         isAuthenticated,
+        saveToLocalStorage,
       }}
     >
       {children}

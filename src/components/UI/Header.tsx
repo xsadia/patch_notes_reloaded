@@ -3,7 +3,9 @@ import { RiPlantLine } from 'react-icons/ri';
 import { FaTwitch, FaTwitter } from 'react-icons/fa';
 import { MdCreate } from 'react-icons/md';
 import { FiLogOut } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import { FaUser } from 'react-icons/fa';
+
+import { Link, useHistory } from 'react-router-dom';
 import { useAuth } from '../../hooks/Auth';
 
 const HeaderContainer = styled.header`
@@ -29,6 +31,7 @@ const TitleContainer = styled.div`
 
   a {
     text-decoration: none;
+    outline: none;
   }
 `;
 
@@ -95,6 +98,7 @@ const LogoutButton = styled.button`
 
 export const Header = () => {
   const { user, signOut, isAuthenticated } = useAuth();
+  const history = useHistory();
   return (
     <HeaderContainer>
       <TitleContainer>
@@ -118,10 +122,15 @@ export const Header = () => {
           <FaTwitch />
           <NavLinkTitle>Twitch</NavLinkTitle>
         </NavLink>
-        {isAuthenticated && (
+        {isAuthenticated ? (
           <LogoutButton onClick={() => signOut()}>
             <FiLogOut />
             <NavLinkTitle>Logout</NavLinkTitle>
+          </LogoutButton>
+        ) : (
+          <LogoutButton onClick={() => history.push('/signin')}>
+            <FaUser />
+            <NavLinkTitle>Login</NavLinkTitle>
           </LogoutButton>
         )}
       </NavLinkContainer>

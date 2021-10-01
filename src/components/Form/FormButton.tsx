@@ -21,6 +21,7 @@ const Button = styled.button`
   font-size: 0.9rem;
   font-weight: 600;
   transition: filter 0.2s;
+  margin-top: 16px;
 
   &:hover {
     filter: brightness(0.9);

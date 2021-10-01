@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Interface } from '../../components/UI/Interface';
 import { Loading } from '../../components/UI/Loading';
 import { useAuth } from '../../hooks/Auth';
+import { VscTrash } from 'react-icons/vsc';
 
 type User = {
   _id: string;
@@ -53,6 +54,10 @@ const PostInfoContainer = styled.div`
   height: 120px;
   border-radius: 8px;
   padding: 8px 16px;
+
+  a {
+    color: inherit;
+  }
 `;
 
 const PostOwnerContainer = styled.div`
@@ -60,6 +65,13 @@ const PostOwnerContainer = styled.div`
   justify-content: space-evenly;
   flex-direction: column;
   padding: 8px 8px;
+  width: 600px;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const PostTitle = styled.h1`
@@ -75,10 +87,27 @@ const PostOwnerInfo = styled.h2`
   color: #fff;
 `;
 
+const DeletePostButton = styled.button`
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  margin-right: 4px;
+  color: #fff;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #f21d3d;
+  }
+  svg {
+    font-size: 1.25rem;
+  }
+`;
+
 export const Homepage = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { signIn } = useAuth();
+  const { user, token } = useAuth();
 
   const fetchPosts = async () => {
     setIsLoading(true);
@@ -98,6 +127,26 @@ export const Homepage = () => {
     setIsLoading(false);
   };
 
+  const handleDeletePost = async (postId: string) => {
+    await fetch(`https://patch-notes-erin.herokuapp.com/posts/${postId}`, {
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `bearer ${token}`,
+      },
+    });
+
+    const postIndex = posts.findIndex((post) => post._id === postId);
+
+    if (postIndex < 0) {
+      return;
+    }
+
+    posts.splice(postIndex, 1);
+    setPosts((prev) => [...prev]);
+    return;
+  };
+
   useEffect(() => {
     fetchPosts();
   }, []);
@@ -108,31 +157,33 @@ export const Homepage = () => {
         <Loading />
       ) : (
         <>
-          <button
-            onClick={() =>
-              signIn({ email: 'fizi@gmail.com', password: '123123' })
-            }
-          >
-            crica
-          </button>
           {posts.map((post) => (
             <PostContainer key={post._id}>
-              <Link to={`/posts/${post._id}`}>
-                <PostInfoContainer>
+              <PostInfoContainer>
+                <Link to={`/posts/${post._id}`}>
                   <PostTitle>{post.title}</PostTitle>
                   <PostSubtitle>{post.subtitle}</PostSubtitle>
-                </PostInfoContainer>
-                <PostOwnerContainer>
-                  <PostOwnerInfo>{post.user.username}</PostOwnerInfo>
-                  <PostOwnerInfo>
-                    {new Date(post.createdAt).toLocaleDateString('pt-BR', {
-                      day: '2-digit',
-                      month: 'long',
-                      year: 'numeric',
-                    })}
-                  </PostOwnerInfo>
-                </PostOwnerContainer>
-              </Link>
+                </Link>
+              </PostInfoContainer>
+              <ButtonContainer>
+                <Link to={`/posts/${post._id}`}>
+                  <PostOwnerContainer>
+                    <PostOwnerInfo>{post.user.username}</PostOwnerInfo>
+                    <PostOwnerInfo>
+                      {new Date(post.createdAt).toLocaleDateString('pt-BR', {
+                        day: '2-digit',
+                        month: 'long',
+                        year: 'numeric',
+                      })}
+                    </PostOwnerInfo>
+                  </PostOwnerContainer>
+                </Link>
+                {user?.role && (
+                  <DeletePostButton onClick={() => handleDeletePost(post._id)}>
+                    <VscTrash />
+                  </DeletePostButton>
+                )}
+              </ButtonContainer>
             </PostContainer>
           ))}
         </>
