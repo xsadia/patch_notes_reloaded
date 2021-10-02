@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Interface } from '../../components/UI/Interface';
 import { Loading } from '../../components/UI/Loading';
 import { useAuth } from '../../hooks/Auth';
 import { VscTrash } from 'react-icons/vsc';
+import { AiOutlineRight, AiOutlineLeft } from 'react-icons/ai';
 
 type User = {
   _id: string;
@@ -139,15 +140,62 @@ const DeletePostButton = styled.button`
   }
 `;
 
+const PaginationContainer = styled.div`
+  width: 640px;
+
+  margin-top: 8px;
+  display: flex;
+  justify-content: flex-end;
+
+  @media screen and (max-width: 600px) {
+    width: 239px;
+  }
+`;
+
+const PaginationButtonContainer = styled.div`
+  display: flex;
+
+  width: 180px;
+  justify-content: space-between;
+  @media screen and (max-width: 600px) {
+    width: 100px;
+  }
+`;
+
+const PaginationButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  transition: filter 0.2s;
+
+  @media screen and (max-width: 600px) {
+    font-size: 0.5rem;
+  }
+
+  &:hover {
+    filter: brightness(0.5);
+  }
+
+  svg {
+    color: var(--green);
+    margin-top: 2px;
+    margin-right: 2px;
+  }
+`;
+
 export const Homepage = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const { user, token } = useAuth();
 
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
     setIsLoading(true);
     const response = await fetch(
-      'https://patch-notes-erin.herokuapp.com/posts',
+      `https://patch-notes-erin.herokuapp.com/posts?page=${currentPage}&limit=5`,
       {
         method: 'GET',
         headers: {
@@ -156,11 +204,18 @@ export const Homepage = () => {
       },
     );
 
+    console.log(currentPage);
+
     const data = await response.json();
 
-    setPosts(data);
+    if (data.length === 0) {
+      setCurrentPage((current) => current - 1);
+      return;
+    }
+
+    setPosts([...data]);
     setIsLoading(false);
-  };
+  }, [currentPage]);
 
   const handleDeletePost = async (postId: string) => {
     await fetch(`https://patch-notes-erin.herokuapp.com/posts/${postId}`, {
@@ -184,7 +239,18 @@ export const Homepage = () => {
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [fetchPosts]);
+
+  /* useEffect(() => {
+    const intersectionObserver = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        setCurrentPage((currentPage) => currentPage + 1);
+      }
+    });
+
+    intersectionObserver.observe(document.querySelector('#ward'));
+    return () => intersectionObserver.disconnect();
+  }, []); */
 
   return (
     <Interface>
@@ -203,7 +269,7 @@ export const Homepage = () => {
               <ButtonContainer>
                 <Link to={`/posts/${post._id}`}>
                   <PostOwnerContainer>
-                    <PostOwnerInfo>{post.user.username}</PostOwnerInfo>
+                    <PostOwnerInfo>{post?.user?.username}</PostOwnerInfo>
                     <PostOwnerInfo>
                       {new Date(post.createdAt).toLocaleDateString('pt-BR', {
                         day: '2-digit',
@@ -221,6 +287,23 @@ export const Homepage = () => {
               </ButtonContainer>
             </PostContainer>
           ))}
+
+          <PaginationContainer>
+            <PaginationButtonContainer>
+              {currentPage > 1 && (
+                <PaginationButton
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                >
+                  <AiOutlineLeft />
+                  próximo
+                </PaginationButton>
+              )}
+              <PaginationButton onClick={() => setCurrentPage(currentPage + 1)}>
+                anterior
+                <AiOutlineRight />
+              </PaginationButton>
+            </PaginationButtonContainer>
+          </PaginationContainer>
         </>
       )}
     </Interface>

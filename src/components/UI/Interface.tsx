@@ -12,6 +12,7 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
   margin-top: 96px;
+  margin-bottom: 56px;
 `;
 
 export const Interface = ({ children }: InterfaceProps) => {
